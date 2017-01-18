@@ -3,10 +3,18 @@ using System.Collections.Generic;
 
 namespace Layered2D.Collections
 {
-    public class LazyList<T> : List<T>, ILazyList<T>
+    public class LazyList<T> : List<T>, ILazyList<T>, IDisposable
     {
         protected Queue<Tuple<T, int>> addQueue;
         protected Queue<T> removeQueue;
+
+        public int CountWithLazy
+        {
+            get
+            {
+                return Count + addQueue.Count - removeQueue.Count;
+            }
+        }
 
         public LazyList()
         {
@@ -32,7 +40,7 @@ namespace Layered2D.Collections
         public virtual bool Apply()
         {
             var result = (removeQueue.Count + addQueue.Count > 0);
-
+            
             while (addQueue.Count > 0)
             {
                 var itm = addQueue.Dequeue();
@@ -41,12 +49,32 @@ namespace Layered2D.Collections
                     base.Add(itm.Item1);
                 else
                     base.Insert(itm.Item2, itm.Item1);
+
+                itm = null;
             }
 
             while (removeQueue.Count > 0)
-                base.Remove(removeQueue.Dequeue());
+            {
+                var itm = removeQueue.Dequeue();
+                base.Remove(itm);
+                itm = default(T);
+            }
 
             return result;
+        }
+
+        public void Dispose()
+        {
+            addQueue?.Clear();
+            removeQueue?.Clear();
+
+            addQueue?.TrimExcess();
+            removeQueue?.TrimExcess();
+
+            addQueue = null;
+            removeQueue = null;
+            
+            GC.SuppressFinalize(this);
         }
     }
 }
