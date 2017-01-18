@@ -6,6 +6,10 @@ namespace Layered2D.Interop
 {
     internal static class UnsafeNativeMethods
     {
+        public const byte AC_SRC_OVER = 0x00;
+        public const byte AC_SRC_ALPHA = 0x01;
+        public const int ULW_ALPHA = 0x00000002;
+
         [DllImport(ExternDLL.User32, EntryPoint = "PeekMessage"), SuppressUnmanagedCodeSecurity]
         public static extern int PeekMessage(out NativeMessage lpMsg, IntPtr hWnd, int wMsgFilterMin, int wMsgFilterMax, int wRemoveMsg);
 

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
+using Layered2D.Windows;
 
 namespace Layered2D.Test
 {
@@ -15,7 +14,15 @@ namespace Layered2D.Test
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            var lw = new LayeredForm();
+
+            RenderLoop.Run(
+                lw,
+                new RenderLoop.RenderCallback(() =>
+                {
+                    lw.Render();
+                }));
         }
     }
 }

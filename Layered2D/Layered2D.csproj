@@ -59,11 +59,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LayeredBuffer.cs" />
     <Compile Include="Collections\ILazyList.cs" />
     <Compile Include="Collections\LazyList.cs" />
     <Compile Include="Components\Base\IScene.cs" />
     <Compile Include="Interop\ExternDLL.cs" />
     <Compile Include="Interop\UnsafeNativeMethods.cs" />
+    <Compile Include="LayeredContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Windows\LayeredWindow.cs">
       <SubType>Form</SubType>
