@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Layered2D</id>
+    <version>0.0.1</version>
+    <title>Layered2D</title>
+    <authors>Steal</authors>
+    <owners>Steal</owners>
+    <licenseUrl>https://github.com/steai/layered2d</licenseUrl>
+    <projectUrl>https://github.com/steai/layered2d</projectUrl>
+    <iconUrl></iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Layered 2D Rendering with SkiaSharp.</description>
+    <releaseNotes>Simple layered rendering with SkiaSharp.</releaseNotes>
+    <copyright>Copyright 2017 Steal all rights reserved.</copyright>
+    <tags></tags>
+  </metadata>
+</package>
