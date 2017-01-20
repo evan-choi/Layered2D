@@ -6,7 +6,7 @@ Layered2D is desktop layered window rendering engine.
 
 ## Using Layered2D
 
-Layered2D is available as a convenience NuGet package, to use install the package like this:
+Layered2D is available as a convenience [NuGet package](https://www.nuget.org/packages/Layered2D/), to use install the package like this:
 
 ```
 nuget install Layered2D
