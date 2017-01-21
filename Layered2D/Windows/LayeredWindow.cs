@@ -89,7 +89,7 @@ namespace Layered2D.Windows
                 hitVisible = value;
 
                 if (IsLoaded)
-                    UpdateHitestVisible();
+                    UpdateHitVisible();
             }
         }
         #endregion
@@ -123,7 +123,7 @@ namespace Layered2D.Windows
             winStyle = UnsafeNativeMethods.GetWindowLong(this.Handle, (int)WindowLong.GWL_STYLE);
             winExStyle = UnsafeNativeMethods.GetWindowLong(this.Handle, (int)WindowLong.GWL_EXSTYLE);
             
-            UpdateHitestVisible();
+            UpdateHitVisible();
 
             // Init client size
             if (this.Width == -1)
@@ -160,7 +160,7 @@ namespace Layered2D.Windows
                 context.targetPosition = new UnsafeNativeMethods.RawPoint(this.Left, this.Top);
         }
 
-        private void UpdateHitestVisible()
+        private void UpdateHitVisible()
         {
             int dwLong = winExStyle;
 
