@@ -155,7 +155,7 @@ namespace Layered2D.Windows
         protected override void OnLocationChanged(EventArgs e)
         {
             base.OnLocationChanged(e);
-
+            
             if (IsLoaded)
                 context.targetPosition = new UnsafeNativeMethods.RawPoint(this.Left, this.Top);
         }
@@ -187,8 +187,11 @@ namespace Layered2D.Windows
 
                 buffer.Resize(Width, Height);
 
+                var contextPosition = context.targetPosition;
+
                 context.Dispose();
                 context = new LayeredContext(this.Handle, buffer);
+                context.targetPosition = contextPosition;
 
                 this.Render();
 
