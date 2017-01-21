@@ -4,9 +4,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using SkiaSharp;
 
-using Layered2D.Interop;
 using WS = Layered2D.Interop.UnsafeNativeMethods.WindowStyles;
-using WindowLong = Layered2D.Interop.UnsafeNativeMethods.WindowLongFlags;
 
 namespace Layered2D.Windows
 {
@@ -14,12 +12,6 @@ namespace Layered2D.Windows
     public class LayeredWindow : Form
     {
         #region [ Property ]
-        private bool isLoaded = false;
-        public bool IsLoaded
-        {
-            get { return isLoaded; }
-        }
-
         public int NativeWidth
         {
             get { return base.Width; }
@@ -77,6 +69,12 @@ namespace Layered2D.Windows
             }
         }
 
+        private bool isLoaded = false;
+        public bool IsLoaded
+        {
+            get { return isLoaded; }
+        }
+
         private bool hitVisible = true;
         public bool HitVisible
         {
@@ -94,6 +92,7 @@ namespace Layered2D.Windows
         }
         #endregion
 
+        #region [ Resources ]
         int winStyle;
         int winExStyle;
 
@@ -101,13 +100,16 @@ namespace Layered2D.Windows
         LayeredContext context;
 
         SKSize resolution = new SKSize(-1, -1);
-       
+        #endregion
+
+        #region [ Initializer ]
+
         protected override CreateParams CreateParams
         {
             get
             {
                 CreateParams cp = base.CreateParams;
-                
+
                 cp.ExStyle |= (int)WS.EX_LAYERED;
 
                 return cp;
@@ -120,9 +122,9 @@ namespace Layered2D.Windows
 
             this.FormBorderStyle = FormBorderStyle.None;
 
-            winStyle = UnsafeNativeMethods.GetWindowLong(this.Handle, (int)WindowLong.GWL_STYLE);
-            winExStyle = UnsafeNativeMethods.GetWindowLong(this.Handle, (int)WindowLong.GWL_EXSTYLE);
-            
+            winStyle = this.GetWindowStyle();
+            winExStyle = this.GetWindowExtendedStyle();
+
             UpdateHitVisible();
 
             // Init client size
@@ -140,12 +142,15 @@ namespace Layered2D.Windows
                 SKAlphaType.Premul);
 
             context = new LayeredContext(this.Handle, buffer);
-            context.targetPosition = new UnsafeNativeMethods.RawPoint(this.Left, this.Top);
+            context.targetPosition = this.Location.ToRawPoint();
 
             // ready
             isLoaded = true;
         }
 
+        #endregion
+
+        #region [ Update ]
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -155,9 +160,9 @@ namespace Layered2D.Windows
         protected override void OnLocationChanged(EventArgs e)
         {
             base.OnLocationChanged(e);
-            
+
             if (IsLoaded)
-                context.targetPosition = new UnsafeNativeMethods.RawPoint(this.Left, this.Top);
+                context.targetPosition = this.Location.ToRawPoint();
         }
 
         private void UpdateHitVisible()
@@ -167,10 +172,7 @@ namespace Layered2D.Windows
             if (!this.HitVisible)
                 dwLong |= (int)WS.EX_TRANSPARENT;
 
-            UnsafeNativeMethods.SetWindowLong(
-                this.Handle,
-                (int)WindowLong.GWL_EXSTYLE,
-                dwLong);
+            this.SetWindowExtendedStyle(dwLong);
         }
 
         public void SetResolution(SKSize size)
@@ -202,6 +204,9 @@ namespace Layered2D.Windows
             }
         }
 
+        #endregion
+
+        #region [ Render ]
         public void Render()
         {
             context.Clear();
@@ -218,5 +223,6 @@ namespace Layered2D.Windows
         {
             context.Present();
         }
+        #endregion
     }
 }

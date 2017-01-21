@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\FormEx.cs" />
+    <Compile Include="Extensions\RawEx.cs" />
+    <Compile Include="Extensions\SkiaSharpEx.cs" />
     <Compile Include="LayeredBuffer.cs" />
     <Compile Include="Collections\ILazyList.cs" />
     <Compile Include="Collections\LazyList.cs" />

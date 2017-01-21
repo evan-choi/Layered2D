@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Security;
 using System.Runtime.InteropServices;
+using System.Drawing;
+using SkiaSharp;
 
 namespace Layered2D.Interop
 {
@@ -75,6 +77,16 @@ namespace Layered2D.Interop
                 X = x;
                 Y = y;
             }
+
+            public Point ToDrawingPoint()
+            {
+                return new Point(X, Y);
+            }
+
+            public SKPoint ToSKPoint()
+            {
+                return new SKPoint(X, Y);
+            }
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -87,6 +99,16 @@ namespace Layered2D.Interop
             {
                 Width = width;
                 Height = height;
+            }
+
+            public Size ToDrawingSize()
+            {
+                return new Size(Width, Height);
+            }
+
+            public SKSize ToSKSize()
+            {
+                return new SKSize(Width, Height);
             }
         }
 
