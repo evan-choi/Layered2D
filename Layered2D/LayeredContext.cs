@@ -7,12 +7,14 @@ namespace Layered2D
 {
     public class LayeredContext : SKCanvas
     {
+        internal RawPoint targetPosition;
+
         RawPoint emptyPoint = new RawPoint(0, 0);
         RawSize screenSize;
 
         LayeredBuffer buffer;
         BLENDFUNCTION blendFunc;
-        
+
         IntPtr target;
         IntPtr native;
         IntPtr scan0;
@@ -21,7 +23,7 @@ namespace Layered2D
         IntPtr screenDc;
         IntPtr memDc;
 
-        public LayeredContext(IntPtr target, LayeredBuffer buffer) : base(buffer)
+        public LayeredContext(IntPtr target, LayeredBuffer buffer) : base(buffer.Bitmap)
         {
             this.target = target;
             this.buffer = buffer;
@@ -34,8 +36,8 @@ namespace Layered2D
             var bmh = new BITMAPV5HEADER()
             {
                 bV5Size = (uint)Marshal.SizeOf(typeof(BITMAPV5HEADER)),
-                bV5Width = buffer.Width,
-                bV5Height = -buffer.Height,
+                bV5Width = buffer.Bitmap.Width,
+                bV5Height = -buffer.Bitmap.Height,
                 bV5Planes = 1,
                 bV5BitCount = 32,
                 bV5Compression = BitmapCompressionMode.BI_RGB,
@@ -53,7 +55,7 @@ namespace Layered2D
                 AlphaFormat = AC_SRC_ALPHA
             };
 
-            screenSize = new RawSize(buffer.Width, buffer.Height);
+            screenSize = new RawSize(buffer.Bitmap.Width, buffer.Bitmap.Height);
 
             screenDc = GetDC(IntPtr.Zero);
             memDc = CreateCompatibleDC(screenDc);
@@ -64,16 +66,29 @@ namespace Layered2D
         
         public void Present()
         {
-            buffer.CopyPixelsTo(scan0, buffer.ByteCount);
-            
+            buffer.Bitmap.CopyPixelsTo(scan0, buffer.Bitmap.ByteCount);
+
             UpdateLayeredWindow(
                 target,
                 screenDc, 
-                ref emptyPoint, ref screenSize,
+                ref targetPosition, ref screenSize,
                 memDc,
                 ref emptyPoint, 0,
                 ref blendFunc, 
                 ULW_ALPHA);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            ReleaseDC(IntPtr.Zero, screenDc);
+            SelectObject(memDc, oldBitmap);
+            DeleteDC(memDc);
+
+            DeleteObject(native);
+            DeleteObject(scan0);
+            DeleteObject(oldBitmap);
         }
     }
 }

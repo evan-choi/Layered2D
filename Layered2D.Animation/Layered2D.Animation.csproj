@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,6 +51,8 @@
   <ItemGroup>
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\DoubleAnimation.cs" />
+    <Compile Include="Animations\PointAnimation.cs" />
+    <Compile Include="Animations\SizeAnimation.cs" />
     <Compile Include="Animations\SKColorAnimation.cs" />
     <Compile Include="Easing\EasingManager.cs" />
     <Compile Include="Easing\EasingTypes.cs" />

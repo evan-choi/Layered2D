@@ -18,13 +18,18 @@ namespace Layered2D.Animations
         public bool IsBusy { get; private set; } = false;
 
         DateTime startTime;
-
+        Func<double, T> easingFunc;
         ITicker ticker;
         
         public Animation()
         {
             Ticker.Init();
             DispatcherTicker.Init();
+        }
+
+        public Animation(Func<double, T> easingFunc) : this()
+        {
+            this.easingFunc = easingFunc;
         }
        
         ~Animation()
@@ -72,7 +77,8 @@ namespace Layered2D.Animations
                 if (duration < TimeSpan.Zero)
                     return;
 
-                ValueChanged?.Invoke(this, OnApply(duration));
+                ValueChanged?.Invoke(this, 
+                    easingFunc == null ? OnApply(duration) : ApplyFromFunc(duration));
 
                 if (duration >= this.Duration)
                 {
@@ -82,6 +88,13 @@ namespace Layered2D.Animations
         }
 
         internal abstract T OnApply(TimeSpan duration);
+
+        private T ApplyFromFunc(TimeSpan duration)
+        {
+            double x = duration.TotalMilliseconds / this.Duration.TotalMilliseconds;
+
+            return easingFunc(x);
+        }
 
         protected virtual void OnFinish()
         {

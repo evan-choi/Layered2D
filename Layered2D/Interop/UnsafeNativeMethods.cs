@@ -30,7 +30,13 @@ namespace Layered2D.Interop
 
         [DllImport(ExternDLL.User32, ExactSpelling = true)]
         public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
-        
+
+        [DllImport(ExternDLL.User32)]
+        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        [DllImport(ExternDLL.User32, SetLastError = true)]
+        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
         [DllImport(ExternDLL.Gdi32)]
         public static extern IntPtr CreateDIBSection(IntPtr hdc, [In] ref BITMAPV5HEADER pbmi, uint pila, out IntPtr ppvBits, IntPtr hSection, uint dwOffset);
 
@@ -42,6 +48,10 @@ namespace Layered2D.Interop
         
         [DllImport(ExternDLL.Gdi32, ExactSpelling = true)]
         public static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
+
+        [DllImport(ExternDLL.Gdi32, EntryPoint = "DeleteObject")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool DeleteObject([In] IntPtr hObject);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct NativeMessage
@@ -223,6 +233,20 @@ namespace Layered2D.Interop
 
             public const uint EX_COMPOSITED = 0x02000000;
             public const uint EX_NOACTIVATE = 0x08000000;
+        }
+
+        public enum WindowLongFlags : int
+        {
+            GWL_EXSTYLE = -20,
+            GWLP_HINSTANCE = -6,
+            GWLP_HWNDPARENT = -8,
+            GWL_ID = -12,
+            GWL_STYLE = -16,
+            GWL_USERDATA = -21,
+            GWL_WNDPROC = -4,
+            DWLP_USER = 0x8,
+            DWLP_MSGRESULT = 0x0,
+            DWLP_DLGPROC = 0x4
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using SkiaSharp;
+using System.Drawing;
 
 namespace Layered2D
 {
@@ -10,6 +11,18 @@ namespace Layered2D
                    c.Red << 16 +
                    c.Green << 8 +
                    c.Blue;
+        }
+
+        public static SKBitmap ToSKBitmap(this Bitmap bmp)
+        {
+            using (var ms = new System.IO.MemoryStream())
+            {
+                bmp.Save(ms, bmp.RawFormat);
+                
+                return SKBitmap.Decode(
+                    ms.ToArray(), 
+                    new SKImageInfo(bmp.Width, bmp.Height, SKColorType.Rgba8888));
+            }
         }
     }
 }
