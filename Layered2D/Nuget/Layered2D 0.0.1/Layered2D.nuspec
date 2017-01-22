@@ -2,13 +2,13 @@
 <package >
   <metadata>
     <id>Layered2D</id>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
     <title>Layered2D</title>
     <authors>Steal</authors>
     <owners>Steal</owners>
-    <licenseUrl>https://github.com/steai/layered2d</licenseUrl>
-    <projectUrl>https://github.com/steai/layered2d</projectUrl>
-    <iconUrl></iconUrl>
+    <licenseUrl>https://github.com/Layered2D/Layered2D/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Layered2D/Layered2D</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/Layered2D/Layered2D/master/Logo/512x512.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Layered 2D Rendering with SkiaSharp.</description>
     <releaseNotes>Simple layered rendering with SkiaSharp.</releaseNotes>

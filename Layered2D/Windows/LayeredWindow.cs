@@ -5,6 +5,8 @@ using System.ComponentModel;
 using SkiaSharp;
 
 using WS = Layered2D.Interop.UnsafeNativeMethods.WindowStyles;
+using System.Threading;
+using SkiaSharp.Views.Desktop;
 
 namespace Layered2D.Windows
 {
@@ -69,6 +71,12 @@ namespace Layered2D.Windows
             }
         }
 
+        public new SKPoint Location
+        {
+            get { return base.Location.ToSKPoint(); }
+            set { base.Location = new Point((int)value.X, (int)value.Y); }
+        }
+
         private bool isLoaded = false;
         public bool IsLoaded
         {
@@ -90,6 +98,20 @@ namespace Layered2D.Windows
                     UpdateHitVisible();
             }
         }
+
+        int fixedFrame = 60;
+        public int FixedFrame
+        {
+            get
+            {
+                return fixedFrame;
+            }
+            set
+            {
+                fixedFrame = value;
+                frameAccurate = 1000d / (value + 0.5d);
+            }
+        }
         #endregion
 
         #region [ Resources ]
@@ -100,6 +122,9 @@ namespace Layered2D.Windows
         LayeredContext context;
 
         SKSize resolution = new SKSize(-1, -1);
+
+        double frameAccurate = 1000d / 60;
+        DateTime frameTime;
         #endregion
 
         #region [ Initializer ]
@@ -146,6 +171,8 @@ namespace Layered2D.Windows
 
             // ready
             isLoaded = true;
+
+            frameTime = DateTime.Now;
         }
 
         #endregion
@@ -209,6 +236,14 @@ namespace Layered2D.Windows
         #region [ Render ]
         public void Render()
         {
+            if (FixedFrame > 0)
+            {
+                if (frameTime > DateTime.Now)
+                    return;
+
+                frameTime = frameTime.Add(TimeSpan.FromMilliseconds(frameAccurate));
+            }
+
             context.Clear();
 
             OnRender(context);
