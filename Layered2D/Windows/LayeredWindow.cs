@@ -2,11 +2,11 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
+
 using SkiaSharp;
+using SkiaSharp.Views.Desktop;
 
 using WS = Layered2D.Interop.UnsafeNativeMethods.WindowStyles;
-using System.Threading;
-using SkiaSharp.Views.Desktop;
 
 namespace Layered2D.Windows
 {
@@ -176,7 +176,7 @@ namespace Layered2D.Windows
         }
 
         #endregion
-
+        
         #region [ Update ]
         protected override void OnLoad(EventArgs e)
         {
@@ -213,15 +213,12 @@ namespace Layered2D.Windows
             if (isLoaded)
             {
                 this.SuspendLayout();
-
+                
                 buffer.Resize(Width, Height);
-
-                var contextPosition = context.targetPosition;
-
+                
                 context.Dispose();
                 context = new LayeredContext(this.Handle, buffer);
-                context.targetPosition = contextPosition;
-
+                
                 this.Render();
 
                 this.NativeWidth = this.Width;

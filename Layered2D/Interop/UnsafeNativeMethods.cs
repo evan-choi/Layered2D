@@ -135,10 +135,10 @@ namespace Layered2D.Interop
             public int bV5YPelsPerMeter;
             public uint bV5ClrUsed;
             public uint bV5ClrImportant;
-            public uint bV5RedMask;
-            public uint bV5GreenMask;
-            public uint bV5BlueMask;
-            public uint bV5AlphaMask;
+            public ColorMask bV5RedMask;
+            public ColorMask bV5GreenMask;
+            public ColorMask bV5BlueMask;
+            public ColorMask bV5AlphaMask;
             public uint bV5CSType;
             public CIEXYZTRIPLE bV5Endpoints;
             public uint bV5GammaRed;
@@ -269,6 +269,15 @@ namespace Layered2D.Interop
             DWLP_USER = 0x8,
             DWLP_MSGRESULT = 0x0,
             DWLP_DLGPROC = 0x4
+        }
+
+        [Flags]
+        public enum ColorMask : uint
+        {
+            Alpha = 0xFF000000,
+            Red = 0x00FF0000,
+            Green = 0x0000FF00,
+            Blue = 0x000000FF
         }
     }
 }
