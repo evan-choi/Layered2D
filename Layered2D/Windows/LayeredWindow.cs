@@ -215,9 +215,11 @@ namespace Layered2D.Windows
                 this.SuspendLayout();
                 
                 buffer.Resize(Width, Height);
-                
+
+                var position = context.targetPosition;
                 context.Dispose();
                 context = new LayeredContext(this.Handle, buffer);
+                context.targetPosition = position;
                 
                 this.Render();
 
